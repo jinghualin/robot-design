@@ -1,0 +1,19 @@
+/* Example for motor_test_1 */
+/* Hardware configuration
+      Left motor connected to channel M-0
+      Right motor connected to channel M-1  */
+
+void main(void)
+{ 
+    ao();    // library function - turn off all motors
+    printf("Motor test0     Press Start!\n"); // show begining message
+    start_press();   // library function - wait START button pressed
+    while(1)  // infinite loop 
+      { motor(0,50);  // motor0 forward at 50% of maximum power 
+        motor(1,50);  // motor1 forward at 50% of maximum power 
+        sleep(1.0);   // delay 1 sec 
+        motor(0,-80); // motor0 backward at 80% of maximum power 
+        motor(1,-80); // motor1 backward at 80% of maximum power 
+        sleep(0.5);   // delay 0.5 sec 
+    } 
+} 

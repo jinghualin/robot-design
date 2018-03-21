@@ -1,0 +1,9 @@
+void main(void)
+{
+    printf("counter time    Press START\n");  // Display message for start program
+    start_press();        // Wait START button pressed
+    reset_system_time();  // Start time counter
+    printf("Press STOP\n");  // Display message for stop counting
+    while(!stop_button());
+    printf("time %f sec\n",seconds());   // Read time to display on screen  
+}

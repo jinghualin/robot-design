@@ -1,0 +1,18 @@
+while(1)    // Infinite loop 
+  { value = read_distance();   // Read analog value from sensor 
+    if(value==1) // Distance interval 10-80 cm 
+      { printf("I see a ball in %f cm.\n",dis_table[an+base]);
+        // Display distance value 
+        move_toward();
+    } 
+    else if (value==2)
+      { printf("Out of Sight... \n");
+        // Show mesage out of Range 
+        keep_searching();
+    }
+    else
+      { printf("I have a Ball.\n");  
+        beep();
+        kick)it();
+    }    
+} 

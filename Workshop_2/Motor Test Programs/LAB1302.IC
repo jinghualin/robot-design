@@ -1,0 +1,6 @@
+void main(void)
+{
+    fd(0);      // Drive motor channel 0
+    stop_press();   // Use stop_press function for STOP switch pressed detection 
+    off(0);      // Off motor channel 0 
+}

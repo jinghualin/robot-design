@@ -1,0 +1,25 @@
+/* Hardware configuration
+   - Encoder sensor left connected to IN-8
+   - Encoder sensor right connected to IN-7
+   - Motor left connected to DC Motor chanel M-0
+   - Motor right connected to DC Motor chanel M-1
+*/
+#use "encoder_lib.ic"   
+/* Include library encoder_lib.ic*/
+void main()
+{
+    encoder_init();  // Initial encoder
+    POWER = 70;      // Set power 70% 
+    printf("Press Start!\n");  // Display message
+    while(1)     // Infinite loop
+      {  
+        start_press();  // Wait for press START
+        printf("Run...\n");  // Display message for running
+        count_step(FORWARD,20,RIGHT);          // Forward 30 cm referance by right encoder
+        count_step(SPIN_RIGHT,5,RIGHT);          // Spin right 10 step referance by right encoder
+        count_step(FORWARD,20,RIGHT);          // Forward 30 cm referance by right encoder
+        count_step(SPIN_RIGHT,5,RIGHT);          // Spin right 10 step referance by right encoder
+        count_step(FORWARD,20,RIGHT);          // Backward 30 cm referance by left encoder
+        printf("Stop...\n"); // Display message for stop
+    }    
+}

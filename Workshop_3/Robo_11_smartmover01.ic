@@ -1,0 +1,17 @@
+#use "encoder_lib.ic" 
+/*Include Library file encoder_lib.ic */
+void main()
+{
+    //    encoder_init();   // Initial Encoder
+    POWER = 60;       // Set power at 60% 
+    encoder_init();  // Initial encoder
+    printf("Press Start!\n");   // Display message for wait press start button
+    
+    while(1)  // Infinite loop
+      {  
+        while(!start_button());  // Wait for start button press
+        printf("\n");            // Clear LCD display
+        count_step(FORWARD,30,RIGHT);  // Robot forward 30 steps referenced by encoder right side
+        printf("STEP %f\n",total_dist());  // Display step count
+    }    
+}

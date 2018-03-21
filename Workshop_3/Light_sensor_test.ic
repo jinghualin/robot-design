@@ -1,0 +1,12 @@
+/* Light Sensor Test */
+/* Hardware configuration
+   Light sensor connected to AI-2 */
+void main() 
+{   
+    int value;  // Declare the input variable from Light sensor 
+    while(1)  // Infinite loop 
+      { value = analog(2);  // Get the input value from AI-2 channel 
+        printf("Light  = %d\n", value); // Display the message with value 
+        sleep(0.1);   // Delay 0.1 second for display message   
+    }
+}   

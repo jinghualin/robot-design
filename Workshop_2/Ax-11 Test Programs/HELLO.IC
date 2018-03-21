@@ -1,0 +1,6 @@
+#use srf05_lib.ic // srf05 library file
+void main(void)
+{
+    printf("Hello YUST !");
+    beep ();
+}

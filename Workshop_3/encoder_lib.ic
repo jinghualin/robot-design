@@ -1,0 +1,161 @@
+/*encoder_lib.ic*/
+/*
+//------------------------------------------------//
+Hardware Configuration 
+- Encoder left connect to port IN-8  
+- Encoder right connect to port IN-7 
+//------------------------------------------------//
+*/
+
+int LEFT =1;          // Define for encoder left side channel
+int RIGHT =0;         // Define for encoder right side channel 
+int FORWARD = 1;      // Define for drive robot forward
+int BACKWARD = 2;     // Define for drive robot backward
+int SPIN_LEFT = 3;    // Define for drive robot spin right
+int SPIN_RIGHT = 4;   // Define for drive robot spin left 
+int TURN_LEFT = 5;    // Define for drive robot turn left
+int TURN_RIGHT = 6;   // Define for drive robot turn right
+
+
+int POWER = 60;       // Define power for drive robot and initial at 40%  
+float STEP=0.0;       // Variable for keep Global step 
+
+//---------------------------------------------------------------------//
+//-------------- Function for reset encoder left and right-------------//
+//---------------------------------------------------------------------//
+void reset_encoder_all()
+{
+    reset_encoder(LEFT);  // Reset Encoder left side(IN-8)
+    reset_encoder(RIGHT); // Reset Encoder right side(IN-7)
+}
+//---------------------------------------------------------------------//
+//-------------- Function for initial Encoder before working ----------//
+//---------------------------------------------------------------------//
+void encoder_init()
+{
+    enable_encoder(LEFT);  // Enanble count Encoder left side(IN-8)
+    enable_encoder(RIGHT); // Reset count Encoder right side(IN-7)
+    reset_encoder_all();   // Reset twice Encoder
+}
+//---------------------------------------------------------------------//
+//-------------- Function for read step for left/right side Encoder ---//
+//---------------------------------------------------------------------//
+int read_step(int ch)
+{
+    read_encoder(ch);   // Read count Encoder by channel reference 
+    return(read_encoder(ch));  // Return read count value 
+}
+//---------------------------------------------------------------------//
+//-------------- Function for read total step -------------------------//
+//---------------------------------------------------------------------//
+float total_step()
+{
+    return(STEP);    // Return Global step count 
+}
+//---------------------------------------------------------------------//
+//-------------- Function for read total distance ---------------------//
+//---------------------------------------------------------------------//
+float total_dist()
+{
+    return(STEP*0.61);  // Return Global distance count 
+}
+//---------------------------------------------------------------------//
+//-------------- Function for clear total step count ------------------//
+//---------------------------------------------------------------------//
+void clear_dist_all()
+{
+    STEP = 0.0;      // Clear Global step count value
+}
+//---------------------------------------------------------------------//
+//-------------- Function for count step by reference ------------------//
+//---------------------------------------------------------------------//
+void count_step(int sel_move,int step,int sel_count)
+{
+    int flag=0,left,right;  
+    
+    reset_encoder_all();   // Reset twice Encoder
+    
+    if(sel_move==FORWARD)  // Condition forward
+      FD();
+    else if(sel_move==BACKWARD) // Condition backward
+      BK();
+    else if(sel_move==SPIN_LEFT) // Condition spin left
+      S_LEFT();
+    else if(sel_move==SPIN_RIGHT) // Condition spin right
+      S_RIGHT();
+    else if(sel_move==TURN_LEFT) // Condition turn left
+      T_LEFT();
+    else if(sel_move==TURN_RIGHT) // Condition turn right
+      T_RIGHT();
+    while(!flag)  // Loop for check count step
+      {
+        left = read_step(LEFT);  // Read step left
+        right = read_step(RIGHT); // Read step right
+        if(sel_count==LEFT && left>=step) // Encoder left side complete?
+          flag = 1;   // Set flag when count complete
+        else if(sel_count==RIGHT && right>=step) // Encoder right side complete?
+          flag = 1; // Set flag when count complete
+    }
+    ao();  // All off motor
+    if(sel_move==FORWARD || sel_move==BACKWARD)  // Condition update Global step count
+      {
+        STEP = STEP + (float)read_step(sel_count); // Update step count if drive robot forward or backward 
+        
+    }
+    reset_encoder_all();  // Reset twice Encoder
+}
+//---------------------------------------------------------------------//
+//-------------- Function for count distance by reference -------------//
+//---------------------------------------------------------------------//
+void count_dist(int a,int b,int c)
+{
+    count_step(a,(b*100)/61,c);  // Calculate distance to step count and drive robot in this result
+}
+//---------------------------------------------------------------------//
+//-------------- Function for drive robot forward ---------------------//
+//---------------------------------------------------------------------//
+void FD()
+{
+    motor(0,POWER);  // Motor 0 forward                  
+    motor(1,POWER);  // Motor 1 forward                  
+}
+//---------------------------------------------------------------------//
+//-------------- Function for drive robot backward ---------------------//
+//---------------------------------------------------------------------//
+void BK()
+{
+    motor(0,-POWER); // Motor 0 backward                    
+    motor(1,-POWER); // Motor 1 backward                    
+}
+//---------------------------------------------------------------------//
+//-------------- Function for drive robot spin left ---------------------//
+//---------------------------------------------------------------------//
+void S_LEFT()
+{
+    motor(0,-POWER); // Motor 0 backward                    
+    motor(1,POWER);  // Motor 1 forward                
+}
+//---------------------------------------------------------------------//
+//-------------- Function for drive robot spin right ---------------------//
+//---------------------------------------------------------------------//
+void S_RIGHT()
+{
+    motor(0,POWER);  // Motor 0 forward                     
+    motor(1,-POWER); // Motor 1 backward                   
+}
+//---------------------------------------------------------------------//
+//-------------- Function for drive robot turn left ---------------------//
+//---------------------------------------------------------------------//
+void T_LEFT()
+{
+    off(0);     // Motor 0 break                     
+    motor(1,POWER);   // Motor 1 forward                  
+}
+//---------------------------------------------------------------------//
+//-------------- Function for drive robot turn right ---------------------//
+//---------------------------------------------------------------------//
+void T_RIGHT()
+{
+    off(1);   // Motor 1 break
+    motor(0,POWER);   // Motor 0 forward                    
+}

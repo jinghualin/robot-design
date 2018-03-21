@@ -1,0 +1,14 @@
+void main(void)
+{
+    printf("Motor test1     Press Start!\n"); // Show begining message
+    start_press();   // Wait START button pressed
+    while(1)  // Infinite loop
+      {
+        fd(0);      // Forward motor M-0
+        sleep(2.0); // Delay 3 sec
+        beep();     // Generate sound beep 1 time
+        bk(0);      // Backward motor M-0
+        sleep(2.0); // Delay 3 sec
+        beep();     // Generate sound beep 1 time
+    }
+}

@@ -1,0 +1,32 @@
+/* Example for motor_test_3  
+   Hardware configuration
+   Motor left connected to DC Motor chanel M-0
+   Motor right connected to DC Motor chanel M-1 */
+
+#define POWER 50    /*Configuration power drive motor*/ 
+
+void main()
+{
+    ao();                            // Off all motors
+    printf("Press Start!\n");        // Show begining message
+    start_press();                   // Wait START button pressed
+    while(1)                         // Infinite loop
+      {
+        run_fd(1.0);                 // Robot forward 1 second
+        turn_left(0.5);              // Robot backward 0.5 second  
+    }
+}
+
+void turn_left(float spin_time)
+{
+    motor(0,-POWER);                 // Motor0 backward with pow value
+    motor(1,POWER);                  // Motor1 forward with pow value
+    sleep(spin_time);                // Delay set by parameter spin_time  
+}
+
+void run_fd(float delay)
+{
+    motor(0,POWER);                  // Motor0 forward with pow value
+    motor(1,POWER);                  // Motor1 forward with pow value
+    sleep(delay);                    // Delay set by parameter delay  
+}

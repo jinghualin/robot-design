@@ -1,0 +1,10 @@
+void main(void)
+{
+    while(1)
+      {
+        start_press(); // Check START  switch pressed  
+        fd(3);  // Drive motor channel 3
+        stop_press(); // Check STOP  switch pressed
+        bk(3);  // Reverse motor spin direction
+    } 
+}

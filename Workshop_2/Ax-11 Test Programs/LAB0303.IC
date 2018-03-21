@@ -1,0 +1,5 @@
+void main(void)
+{
+    char a[] = "Interactive C";    // Declare "a" to array variable type and define message
+    printf("%s\n",a);  // Show message of "a" on screen
+}

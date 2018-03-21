@@ -1,0 +1,10 @@
+/* Knob Test */
+
+void main(void)
+{
+    while(1)
+      {
+        printf("knob = %d\n",knob()); // Show analog value at knob channel
+        sleep(0.1); // Delay 0.1 sec
+    }
+}

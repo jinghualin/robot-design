@@ -1,0 +1,12 @@
+void main(void)
+{
+    int i;        
+    set_beeper_pitch(800.0);  // Set frequency at 800Hz
+    for(i=0;i<5;i++)  // Set the loop to 5 times
+      {  
+        beeper_on();  // Beep on
+        sleep(0.7);   // Delay 0.7 second
+        beeper_off(); // Beep off
+        sleep(0.7);   // Delay 0.7 second
+    }
+}

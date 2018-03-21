@@ -1,0 +1,69 @@
+/* Example code for staying in a boundary 
+   Hardware configuration
+   - Left Motor DC Motor chanel M-0, Right Motor DC Motor chanel M-1
+   - Left Sensor to AI-31, Mid Sensor to AI-25, Right Sensor to AI-17 */
+
+#define POWER 60   /*Configuration power drive motor */                                        
+
+#use "encoder_lib.ic"   
+#use "read_sensor_function.ic"
+/* Include library encoder_lib.ic*/
+/* Include library encoder_lib.ic*/
+
+void main(void)
+{
+    int sensor_status=0; // Integer value for sensor status 
+    
+    encoder_init();  // Initial encoder
+    
+    printf("Press Start!\n");  // Show begining message 
+    while(!start_button());     // Wait START button pressed to run
+    
+    while(!stop_button()) // Continue until STOP button pressed  
+      { sensor_status = read_sensors();  // Read all sensors
+        switch (sensor_status)
+          {
+            case 0:             // 000 Safe 
+              printf("000\n");
+            break;
+            case 1:             // 001 Line on the right 
+              printf("001\n");
+            break;
+            
+            case 2:             // 010 Most unlikely 
+            printf("010\n");
+            break;
+            
+            case 3:             // 011 Line on the right 
+             printf("011\n");
+            break;
+            
+            case 4:             // 100 Line on the left 
+             printf("100\n");
+
+            break;
+            
+            case 5:             // 101 between two lines in the corner 
+              printf("101\n");
+  
+            break;
+            
+            case 6:             // 110 heading to the right 
+              printf("110\n");
+            break;
+            
+            case 7:             // 111 meeting the line straight ahead 
+            printf("111\n");
+            break;
+            
+            default:            // If out of condition 
+              printf("shit\n");
+            break;
+        }  
+        sleep(0.5);
+    }
+    printf("Stop..\n"); // Show finish message  
+    ao();             // Off all motor for ending program 
+    beep();           // Sound beep signal for ending program
+}
+

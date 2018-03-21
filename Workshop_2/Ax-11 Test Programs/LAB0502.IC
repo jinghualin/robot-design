@@ -1,0 +1,7 @@
+void main(void)
+{
+    set_beeper_pitch(700.0);  // Set frequency at 700 Hz 
+    beeper_on();   // ON sound
+    sleep(5.0);   // Delay for ON sound 5 sec
+    beeper_off();   // OFF sound
+} 

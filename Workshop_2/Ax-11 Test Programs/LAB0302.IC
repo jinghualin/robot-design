@@ -1,0 +1,6 @@
+void main(void)
+{
+    float result;  // Declare "result" to float variable
+    result = sqrt(2.0);  // Calculate square root 2 and store to result variable
+    printf("sqrt(2)=%f\n",result); // Show "result" data on screen
+}

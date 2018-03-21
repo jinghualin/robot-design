@@ -1,0 +1,9 @@
+void main(void)
+{
+    while(1)  // Infinit loop
+      { 
+        printf("Sound test\n"); // Show message on screen
+        beep();  // Once beep sound generated
+        sleep(1.0); // Delay 1 sec
+    }
+}

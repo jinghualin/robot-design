@@ -1,0 +1,17 @@
+void main(void)
+{
+    int speed = 20; // Declare "speed" for control speed motor
+    printf("Motor test2     Press Start!\n"); // Show begining message
+    start_press();   // Wait START button pressed
+    while(1)   // Infinite loop
+      {
+        printf("speed %d\n",speed); // Display speed motor on screen
+        motor(1,speed);  // Drive Motor M-1 
+        msleep(3000L);   // Delay 3 sec
+        speed +=10;      // Incrase speed 10 time
+        if(speed>80)     // Check speed over 80? 
+          {
+            speed = 20;  // Set speed at 20
+        }
+    }
+}

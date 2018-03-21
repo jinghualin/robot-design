@@ -1,0 +1,21 @@
+/* IR Reflector Sensor Test */
+/* Hardware configuration
+   IR sensor connected to AI-25 */
+
+void main(void)
+{
+    while(1)   // Infinite loop
+      {
+        if(analog(25) >= 100)  // If analog value <100 goto else
+          {
+            printf("Analog(25)>=100\n");  // Show result message on screen
+            beep();   // Beep one time
+            sleep(1.0);  // Delay 1 sec
+        }
+        else
+          {
+            printf("Analog(25)<100\n");  // Show another result on screen
+            sleep(1.0); // Delay 1 sec
+        }
+    }
+}

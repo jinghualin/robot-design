@@ -1,0 +1,184 @@
+/* Example code for staying in a boundary 
+   Hardware configuration
+   - Left Motor DC Motor chanel M-0, Right Motor DC Motor chanel M-1
+   - Left Sensor to AI-31, Mid Sensor to AI-25, Right Sensor to AI-17 */
+
+#define POWER 60   /*Configuration power drive motor */                                        
+#define base -19 
+
+
+#use "encoder_lib.ic"   
+#use "read_sensor_function.ic"
+/* Include library encoder_lib.ic*/
+/* Include library encoder_lib.ic*/
+
+int ball;
+void main(void)
+{
+    int sensor_status=0; // Integer value for sensor status 
+    int i;
+    i = 0;
+    ball = 1;
+    encoder_init();  // Initial encoder
+    
+    printf("Press Start!\n");  // Show begining message 
+    while(!start_button());     // Wait START button pressed to run
+    
+    while(!stop_button()) // Continue until STOP button pressed  
+      { sensor_status = read_sensors();  // Read all sensors
+        switch (sensor_status)
+          {
+            case 0:             // 000 Safe 
+              if(ball != 0)
+              {
+                i = seek_ball(i);
+            }
+            else
+              {
+                motor(1,POWER);
+                motor(0,POWER);
+            }
+            break;
+            case 1:             // 001 Line on the right 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_LEFT,15,RIGHT);   // Turn left to get back to the field    
+            ball = 1;
+            break;
+            
+            case 2:             // 010 Most unlikely 
+              ao();                             // Turn off all motors
+            msleep(100L);                     // Pause for 0.1 sec 
+            ball = 1;
+            break;
+            
+            case 3:             // 011 Line on the right 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_LEFT,10,RIGHT);   // Turn left to get back to the field 
+            ball = 1;
+            break;
+            
+            case 4:             // 100 Line on the left 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_RIGHT,15,LEFT);   // Turn right to get back to the field    
+            ball = 1;
+            break;
+            
+            case 5:             // 101 between two lines in the corner 
+              count_step(BACKWARD,15,RIGHT);    // Go backward to clear the line
+            count_step(SPIN_RIGHT,10,LEFT);   // Turn around 180 degree to get back to the field    
+            ball = 1;
+            break;
+            
+            case 6:             // 110 heading to the right 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_RIGHT,10,LEFT);   // Turn right to get back to the field    
+            ball = 1;
+            break;
+            
+            case 7:             // 111 meeting the line straight ahead 
+              count_step(BACKWARD,15,RIGHT);    // Go backward to clear the line
+            count_step(SPIN_RIGHT,10,LEFT);   // Turn around 180 degree to get back to the field    
+            ball = 1;
+            break;
+            
+            default:            // If out of condition 
+              count_step(FORWARD,1,LEFT);       // Direct forward
+            break;
+        }  
+    }
+    printf("Stop..\n"); // Show finish message  
+    ao();             // Off all motor for ending program 
+    beep();           // Sound beep signal for ending program
+}
+
+int seek_ball(int i)
+{
+    int sensor_status;
+    int an;  // Declare a variable for analog input from sensor 
+    an = analog(6);   // Read analog value from sensor 
+    if(an>=10 && an<=116 ) // Distance interval 10-80 cm 
+      { 
+        motor(0,POWER);
+        motor(1,POWER);
+        sleep(0.05);
+        
+    } 
+    else if(an>116 && an<=200)
+      {
+        i = 0;
+        ball = 0;
+        move_fd();
+    } 
+    else{
+        count_step(SPIN_RIGHT,2,LEFT);
+        sensor_status = read_sensors();
+        if(sensor_status != 0)
+          {
+            return i;
+        }
+        i++;
+        if(i>=30)
+          {
+            i=0;
+            move_fd();
+        }
+    } 
+    sleep(0.05);
+    return i;
+}
+
+void move_fd(void)
+{
+    int i;
+    int sensor_status;
+    i = 0;
+    while(i <= 20) // Continue until STOP button pressed  
+      { 
+        sensor_status = read_sensors();  // Read all sensors
+        switch (sensor_status)
+          {
+            case 0:             // 000 Safe 
+              count_step(FORWARD,1,LEFT);
+            i++;
+            break;
+            case 1:             // 001 Line on the right 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_LEFT,15,RIGHT);   // Turn left to get back to the field    
+            break;
+            
+            case 2:             // 010 Most unlikely 
+              ao();                             // Turn off all motors
+            msleep(100L);                     // Pause for 0.1 sec 
+            break;
+            
+            case 3:             // 011 Line on the right 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_LEFT,10,RIGHT);   // Turn left to get back to the field 
+            break;
+            
+            case 4:             // 100 Line on the left 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_RIGHT,15,LEFT);   // Turn right to get back to the field    
+            break;
+            
+            case 5:             // 101 between two lines in the corner 
+              count_step(BACKWARD,15,RIGHT);    // Go backward to clear the line
+            count_step(SPIN_RIGHT,10,LEFT);   // Turn around 180 degree to get back to the field    
+            break;
+            
+            case 6:             // 110 heading to the right 
+              count_step(BACKWARD,10,RIGHT);    // Go backward to clear the line
+            count_step(TURN_RIGHT,10,LEFT);   // Turn right to get back to the field    
+            break;
+            
+            case 7:             // 111 meeting the line straight ahead 
+              count_step(BACKWARD,15,RIGHT);    // Go backward to clear the line
+            count_step(SPIN_RIGHT,10,LEFT);   // Turn around 180 degree to get back to the field    
+            break;
+            
+            default:            // If out of condition 
+              count_step(FORWARD,1,LEFT);       // Direct forward
+            break;
+        }  
+    }
+}

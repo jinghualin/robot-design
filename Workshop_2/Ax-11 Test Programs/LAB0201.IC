@@ -1,0 +1,6 @@
+void main(void)
+{
+    int x;   // Variable x is keep value
+    x = 26;  // Set x = 26
+    printf("%d\n",x);   // Display value of x in decimal format
+}

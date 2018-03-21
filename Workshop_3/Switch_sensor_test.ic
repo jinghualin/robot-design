@@ -1,0 +1,18 @@
+/* Hardware configuration
+   Touch sensor connected to DI-11 */
+void main() 
+{   
+    int result;  // Declare the input variable from Touch sensor 
+    while(1)  // Infinite loop 
+      { result = digital(11);  // Get the sensor status from DI-11 channel 
+        if(result==1)   // Check Touch sensor pressed 
+          { printf("Your press!\n"); // Display message for pressed 
+            beep();    // Sound beep 
+            sleep(1.0);   // Delay 1 second for display message 
+        }   
+        else  
+          { printf("___________\n");  // Display when Touch sensor not pressed 
+            sleep(0.1);   // Delay 0.1 second for display message 
+        }
+    }
+} 

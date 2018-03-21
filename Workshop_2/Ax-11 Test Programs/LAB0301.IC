@@ -1,0 +1,7 @@
+void main(void)
+{
+    int x,y;  // Declare x and y to integer
+    x = 47;   // Set x = 47
+    y = 15;   // Set y = 15
+    printf("data1=%d        data2=%d\n",x,y); // Display x and y value in decimal format
+}

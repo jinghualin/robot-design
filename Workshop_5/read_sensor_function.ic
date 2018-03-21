@@ -1,0 +1,32 @@
+/* Example code for rading three IR Reflective Sensors */ 
+#define ref 100    /*Configuration analog reference  */          
+
+int read_sensors()
+{   
+    int sensor_status = 0;
+    int L_sensor=0,R_sensor=0,M_sensor=0; // Declare input analog variables
+    
+    L_sensor = analog(17);  // Read left sensor data
+    M_sensor = analog(25);  // Read middle sensor data
+    R_sensor = analog(31);  // Read right sensor data
+    
+    if((L_sensor>ref)&&(M_sensor>ref)&&(R_sensor>ref)) // 000 Off line
+      sensor_status = 0;
+    else if((L_sensor>ref)&&(M_sensor>ref)&&(R_sensor<ref)) // 001 Over right
+      sensor_status = 1;       // Direct forward
+    else if((L_sensor>ref)&&(M_sensor<ref)&&(R_sensor>ref)) // 010 On line
+      sensor_status = 2;       // Direct forward
+    else if((L_sensor>ref)&&(M_sensor<ref)&&(R_sensor<ref)) // 011 Over right
+      sensor_status = 3;       // Direct forward
+    else if((L_sensor<ref)&&(M_sensor>ref)&&(R_sensor>ref)) // 100 Over left
+      sensor_status = 4;       // Direct forward
+    else if((L_sensor<ref)&&(M_sensor>ref)&&(R_sensor<ref)) // 101 Between lines
+      sensor_status = 5;       // Direct forward
+    else if((L_sensor<ref)&&(M_sensor<ref)&&(R_sensor>ref)) // 110 Over left
+      sensor_status = 6;       // Direct forward
+    else if((L_sensor<ref)&&(M_sensor<ref)&&(R_sensor<ref)) // 111 On T or finish
+      sensor_status = 7;       // Direct forward
+    
+//    printf("Sensor: %b\n",sensor_status);   // Display value in binary format
+    return(sensor_status);
+}

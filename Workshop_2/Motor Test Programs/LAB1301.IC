@@ -1,0 +1,9 @@
+void main(void)
+{
+    while(!stop_button())  // Do loop for checking STOP pressed 
+      {
+        fd(0);  // Drive motor channel 0
+    }
+    off(0);  // OFF motor channel 0
+    beep();  // Sound beep 1 time
+}

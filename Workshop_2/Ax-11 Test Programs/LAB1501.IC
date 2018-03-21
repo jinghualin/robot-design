@@ -1,0 +1,7 @@
+void main(void)
+{
+    printf("counter time\n");  // Display message for start program
+    reset_system_time();  // Start time counter
+    while(!stop_button());  // Wait until STOP switch pressed
+    printf("time %f sec\n",seconds());   // Read time to display on screen  
+}

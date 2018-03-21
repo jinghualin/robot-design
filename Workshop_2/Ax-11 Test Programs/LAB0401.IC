@@ -1,0 +1,5 @@
+void main(void)
+{
+    printf("Sound test\n"); // Show message on screen
+    beep(); // Once beep sound generated
+}

@@ -1,0 +1,15 @@
+void main(void)
+{
+    float freq=100.0; // Declare "freq" to float variable and set value 100.0
+    while(freq < 3000.0)  // Loop working for "freq" < 3000.0 Hz 
+      {
+        printf("Freq.%f Hertz\n",freq);  // Show "freq" data on screen
+        tone(freq,0.1); // Generate tone
+        freq += 100.0; // Increase freq 100.0 Hz
+        sleep(1.0);  // Delay 1 sec
+    }
+    beep();    // Sound beep 1 time
+    sleep(0.5);  // Delay 0.5 sec
+    beep();    // Sound beep 1 time
+    printf("Stop\n");  // Display "Stop" on screen for End 
+}
